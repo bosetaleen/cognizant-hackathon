@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-image"></div>
+    <div class="login-content">
+      <h1>Hello, <span>welcome!</span></h1>
+      <form method="POST" action="/login">
+        <label for="email">Email address</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="name@mail.com" 
+          required
+        >
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Password" 
+          required
+        >
+        <!-- Removed form-row with remember me and forgot password -->
+        <div class="actions">
+          <button type="submit">Login</button>
+        </div>
+      </form>
+      <!-- Removed social section -->
+    </div>
+  </div>
+</body>
+</html>

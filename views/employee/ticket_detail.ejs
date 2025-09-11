@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/ticket.css">
+</head>
+<body>
+  <div class="ticket-container">
+    <h2 class="page-title"> Ticket Details</h2>
+
+    <div class="ticket-card">
+      <h3 class="ticket-title"><%= ticket.title %></h3>
+      <p class="ticket-description"><%= ticket.description %></p>
+      
+      <div class="ticket-info">
+        <div class="info-card">
+          <div class="info-label">Status</div>
+          <div class="info-value status-<%= ticket.status.toLowerCase() %>">
+            <%= ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1) %>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-label">Priority</div>
+          <div class="info-value priority-<%= ticket.priority.toLowerCase() %>">
+            <%= ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="date-info">
+         Created on <%= new Date(ticket.created_at).toLocaleString() %>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="/employee/dashboard" class="btn-back">
+        ← Back to Dashboard
+      </a>
+
+      <% if(ticket.status !== 'resolved') { %>
+        <form method="POST" action="/employee/tickets/<%= ticket.id %>/resolve">
+          <button type="submit" class="btn-resolve">
+             Mark as Resolved
+          </button>
+        </form>
+      <% } else { %>
+        <div class="resolved-badge">
+           Ticket Resolved
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

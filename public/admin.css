@@ -1,0 +1,301 @@
+/* Fixed Unassigned Tickets Title */
+.unassigned-title-fixed {
+  position: fixed;
+  left: 220px; /* width of navbar */
+  top: 0;
+  width: calc(100% - 220px);
+  background: #fff;
+  z-index: 900;
+  padding: 20px 30px 10px 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: none;
+  align-items: center;
+  gap: 20px;
+}
+body.unassigned-active .unassigned-title-fixed {
+  display: flex;
+}
+/* Show fixed title only when unassigned tab is active */
+.unassigned-table-scroll {
+  margin-top: 0;
+}
+/* ==========================
+   Base Styles
+========================== */
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('loginback.png'); /* adjust path */
+  background-size: cover;          /* make image cover full screen */
+  background-repeat: no-repeat;    /* prevent tiling */
+  background-attachment: fixed;    /* stay fixed when scrolling */
+  background-position: center; 
+  margin: 0;
+  padding: 0;
+  color: #333;
+  display: flex;
+  flex-direction: row-reverse; /* navbar on right */
+  min-height: 100vh;
+}
+
+.layout {
+  margin-left: 220px; /* leave space for fixed navbar on left */
+  min-height: 100vh;
+}
+/* ==========================
+   Right Sidebar Navbar
+========================== */
+.navbar {
+  width: 220px;
+  background-color: #5b2c83; /* main purple */
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  padding-top: 20px;
+  z-index: 1000;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.07);
+  display: block;
+}
+
+
+/* ==========================
+   Logout Button in Sidebar
+========================== */
+.logout-button {
+  margin-top: auto; /* push it to the bottom of sidebar */
+  display: block;
+  background: #e74c3c; /* red */
+  color: #fff;
+  text-align: center;
+  padding: 12px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #d65c4e; /* darker red on hover */
+}
+
+
+.nav-left .brand {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 0 20px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.nav-item {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.nav-item:hover {
+  background-color: #7d3c98; /* lighter purple */
+}
+
+.nav-item.active {
+  background-color: #8e44ad; /* darker purple */
+  color: white;
+}
+
+/* Notification bell */
+.nav-item #ticket-count {
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+}
+
+/* ==========================
+   Main Content Area
+========================== */
+main {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Sections hidden by default */
+.content-section {
+  display: none;
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  animation: fadeIn 0.3s ease-in-out;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.dashboard-title,
+.create-employee-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #5b2c83;
+}
+
+.welcome-text {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+/* ==========================
+   Employee Table
+========================== */
+.table-container {
+  overflow-x: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee-table th,
+.employee-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.employee-table th {
+  background-color: #ede7f6; /* light purple */
+  font-weight: bold;
+}
+
+.employee-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.employee-table tr:hover {
+  background-color: #f3e5f5;
+}
+
+/* Remove button */
+.actions .remove {
+  background: #8e44ad;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.actions .remove:hover {
+  background: #732d91;
+}
+
+/* ==========================
+   Create Employee Form
+========================== */
+.create-employee-container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  max-width: 600px;
+}
+
+.create-employee-form .form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #5b2c83;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #8e44ad;
+}
+
+.btn-submit {
+  background-color: #8e44ad;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #732d91;
+}
+
+/* ==========================
+   Unassigned Tickets Table
+========================== */
+.min-w-full {
+  width: 100%;
+}
+
+.min-w-full th,
+.min-w-full td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.min-w-full th {
+  background-color: #ede7f6;
+  font-weight: bold;
+}
+
+.min-w-full tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.min-w-full tr:hover {
+  background-color: #f3e5f5;
+}
+
+/* Ticket description box */
+.min-w-full td .p-2 {
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* ==========================
+   Animations
+========================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

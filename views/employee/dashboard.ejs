@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/employee.css">
+</head>
+<body>
+  <div class="container mx-auto p-6">
+    <div class="main-card">
+      <h2 class="main-title">Help Desk Portal</h2>
+      <p class="welcome-text">Welcome, <%= user.name %>!</p>
+
+      <!-- Navigation Tabs -->
+      <div class="tab-container">
+        <nav class="tab-nav" aria-label="Tabs">
+          <button onclick="showView('dashboard-view')" 
+                  class="tab-button tab-active" 
+                  data-tab="dashboard-view">
+             Dashboard
+          </button>
+          <button onclick="showView('new-ticket-view')" 
+                  class="tab-button" 
+                  data-tab="new-ticket-view">
+             Raise New Ticket
+          </button>
+          <% if (user.role === 'admin') { %>
+            <button onclick="showView('new-employee-view')" 
+                    class="tab-button" 
+                    data-tab="new-employee-view">
+               Create Employee
+            </button>
+          <% } %>
+        </nav>
+      </div>
+
+      <!-- Dashboard View -->
+      <div id="dashboard-view" class="content-view">
+        <h3 class="section-title">Your Tickets</h3>
+        <div class="ticket-list">
+          <% if (tickets.length === 0) { %>
+            <div class="no-tickets">
+              <div class="no-tickets-icon"></div>
+              <p><strong>No tickets yet.</strong></p>
+              <p>Click "Raise New Ticket" to create your first support request.</p>
+            </div>
+          <% } else { %>
+            <% tickets.forEach(ticket => { %>
+              <div class="ticket-card">
+                <h4 class="ticket-title"><%= ticket.title %></h4>
+                <span class="ticket-priority priority-<%= ticket.priority.toLowerCase() %>">
+                  <%= ticket.priority %>
+                </span>
+                <p class="ticket-description"><%= ticket.description %></p>
+                <p class="ticket-status">Status: <%= ticket.status %></p>
+                <p class="ticket-date">
+                  Created: <%= new Date(ticket.created_at).toLocaleString() %>
+                </p>
+                <a href="/employee/tickets/<%= ticket.id %>" class="ticket-link">
+                  View Details →
+                </a>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+        <a href="/logout" class="btn-secondary">
+          🚪 Logout
+        </a>
+      </div>
+
+      <!-- Raise Ticket View -->
+      <div id="new-ticket-view" class="content-view hidden">
+        <div class="form-container">
+          <h2 class="form-title">🎫 Raise a New Ticket</h2>
+          <form method="POST" action="/employee/tickets">
+            <div class="form-group">
+              <label for="title" class="form-label">Ticket Title</label>
+              <input type="text" id="title" name="title" placeholder="Brief description of the issue" 
+                     class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" name="description" placeholder="Provide detailed information about the issue..." 
+                        class="form-textarea" required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="priority" class="form-label">Priority Level</label>
+              <select name="priority" id="priority" class="form-select" required>
+                <option value="critical"> Critical - System partially unusable</option>
+                <option value="major"> Major - Significant functionality affected</option>
+                <option value="minor" selected>Minor - Small functionality issues</option>
+                <option value="trivial"> Trivial - Minor cosmetic issues</option>
+                <option value="blocker">Blocker - System completely unusable</option>
+              </select>
+            </div>
+            
+            <button type="submit" class="btn-primary">
+               Submit Ticket
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Create Employee View (Admin only) -->
+      <div id="new-employee-view" class="content-view hidden">
+        <div class="form-container">
+          <h2 class="form-title">👥 Create Employee</h2>
+          <form method="POST" action="/admin/employees">
+            <div class="form-group">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Enter employee's full name" 
+                     class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="Enter work email address" 
+                     class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" name="password" placeholder="Enter secure password" 
+                     class="form-input" required>
+            </div>
+            
+            <input type="hidden" name="role" value="employee">
+            
+            <div class="form-group">
+              <label for="date_of_joining" class="form-label">Date of Joining</label>
+              <input type="date" id="date_of_joining" name="date_of_joining" 
+                     class="form-input" required>
+            </div>
+            
+            <button type="submit" class="btn-primary">
+              ✨ Create Employee Account
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Tabs -->
+  <script>
+    const views = ['dashboard-view', 'new-ticket-view', 'new-employee-view'];
+    const tabs = document.querySelectorAll('[data-tab]');
+
+    function showView(viewId) {
+      // Hide all views
+      views.forEach(id => {
+        const viewElement = document.getElementById(id);
+        if (viewElement) viewElement.classList.add('hidden');
+      });
+
+      // Deactivate all tabs
+      tabs.forEach(tab => tab.classList.remove('tab-active'));
+
+      // Show the selected view
+      const activeView = document.getElementById(viewId);
+      if (activeView) activeView.classList.remove('hidden');
+
+      // Activate the selected tab
+      const activeTab = document.querySelector(`[data-tab="${viewId}"]`);
+      if (activeTab) activeTab.classList.add('tab-active');
+    }
+
+    // Add smooth transitions when switching tabs
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click handlers for enhanced UX
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Add a subtle animation effect
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 100);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

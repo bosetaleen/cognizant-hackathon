@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/admin.css" />
+  <title>Admin Panel</title>
+</head>
+<body>
+
+<div class="layout">
+  <!-- NAVBAR (right side full height) -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <span class="brand">Admin Panel</span>
+    </div>
+    <div class="nav-right">
+      <a href="#dashboard" class="nav-item active">Dashboard</a>
+      <a href="#employee-list" class="nav-item">Employee List</a>
+      <a href="#create-employee" class="nav-item">Create Employee</a>
+      <a href="#unassigned-tickets" class="nav-item">Tickets</a>
+      <a href="/admin/logout" class="logout-button">Logout</a>
+    </div>
+  </nav>
+
+
+<!-- Dashboard Section -->
+<div id="dashboard" class="content-section"<%= activeTab === 'dashboard' ? '' : 'display:none;' %>>
+  <h2 class="dashboard-title">Admin Dashboard</h2>
+  <p class="welcome-text">Welcome, <%= user ? user.name : "Admin" %>!</p>
+</div>
+
+
+<!-- Employee List Section -->
+<div id="employee-list" class="content-section" >
+  <h2 class="dashboard-title">Employee List</h2>
+  <div class="table-container">
+    <table class="employee-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Date of Joining</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (!employees || employees.length === 0) { %>
+          <tr>
+            <td colspan="6" class="text-center text-gray-500">No employees found.</td>
+          </tr>
+        <% } else { %>
+          <% employees.forEach(emp => { %>
+            <tr>
+              <td><%= emp.id %></td>
+              <td><%= emp.name %></td>
+              <td><%= emp.email %></td>
+              <td><%= emp.date_of_joining ? emp.date_of_joining.toISOString().split('T')[0] : '-' %></td>
+              <td><%= emp.role %></td>
+              <td class="actions">
+               <form method="POST" action="/admin/employees/<%= emp.id %>/delete" 
+      onsubmit="return confirm('Are you sure you want to remove <%= emp.name %>?');">
+  <button type="submit" class="remove">Remove</button>
+</form>
+
+              </td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Create Employee Section -->
+<div id="create-employee" class="content-section">
+  <div class="create-employee-container">
+    <h2 class="create-employee-title">Create Employee</h2>
+    <form method="POST" action="/admin/employees" class="create-employee-form">
+      <div class="form-group">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter full name" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter email" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="role" class="form-label">Role</label>
+        <input type="text" id="role" name="role" placeholder="Enter role" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="date_of_joining" class="form-label">Date of Joining</label>
+        <input type="date" id="date_of_joining" name="date_of_joining" class="form-input" required>
+      </div>
+      <button type="submit" class="btn-submit">Create Employee</button>
+    </form>
+  </div>
+</div>
+
+<!-- Unassigned Tickets Section -->
+<div id="unassigned-tickets" class="content-section" <%= activeTab === 'unassigned' ? '' : 'display:none;' %>>
+
+  <!-- Auto-Assign Button -->
+<form method="POST" action="/admin/tickets/auto-assign-all" style="display:inline;">
+  <button type="submit"
+          class="mb-4 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700
+">
+     Auto-Assign & Refresh
+  </button>
+</form>
+  <!-- Tickets Table -->
+  <table class="min-w-full bg-white border rounded shadow">
+    <thead>
+      <tr class="bg-gray-100 text-left">
+        <th class="px-4 py-2 border">Ticket ID</th>
+        <th class="px-4 py-2 border">Title</th>
+        <th class="px-4 py-2 border">Raised By</th>
+        <th class="px-4 py-2 border">Description</th>
+        <th class="px-4 py-2 border">Priority Order</th>
+        <th class="px-4 py-2 border">Priority</th>
+        <th class="px-4 py-2 border">Assigned Team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (tickets && tickets.length > 0) { %>
+        <% tickets.forEach(ticket => { %>
+          <tr class="border-b hover:bg-gray-50">
+            <td class="px-4 py-2 font-mono"><%= ticket.id %></td>
+            <td class="px-4 py-2"><%= ticket.title %></td>
+            <td class="px-4 py-2 text-gray-500"><%= ticket.created_by_name || ticket.created_by %></td>
+            <td class="px-4 py-2">
+              <div class="p-2 border rounded bg-gray-50 text-gray-600">
+                <%= ticket.description %>
+              </div>
+            </td>
+            <td class="px-4 py-2 font-mono text-center"><%= ticket.priority_order || '-' %></td>
+            <td class="px-4 py-2 font-bold"><%= ticket.priority || 'Normal' %></td>
+            <td class="px-4 py-2 text-blue-600 font-semibold">
+              <%= ticket.assigned_to || 'Unassigned' %>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="7" class="text-center p-4 text-gray-500">No unassigned tickets</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ---------- NAVIGATION (unchanged) ---------- */
+  const navItems = document.querySelectorAll('.nav-item');
+  const contentSections = document.querySelectorAll('.content-section');
+
+  function showSection(id) {
+    navItems.forEach(n => n.classList.toggle('active', n.hash === `#${id}`));
+    contentSections.forEach(s => s.classList.toggle('active', s.id === id));
+  }
+
+  navItems.forEach(item => item.addEventListener('click', e => {
+    e.preventDefault();
+    showSection(item.hash.substring(1));
+    history.replaceState(null, '', item.hash);
+  }));
+
+  showSection(location.hash ? location.hash.substring(1) : 'dashboard');
+});
+
+</script>
+</body>
+
+
+</body>
+</html>
