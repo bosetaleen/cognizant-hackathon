@@ -1,43 +1,51 @@
-Model-Driven Ticket Management System
-Overview
-This project is a modern, scalable ticket management system enhanced with machine learning models for intelligent ticket classification. It separates concerns across three layers: a responsive frontend, a Node.js web backend, and a Python ML backend, with PostgreSQL as the central data store.
+# Model-Driven Ticket Management System
 
-Tech Stack
-Frontend
-Languages: HTML, CSS, JavaScript
+A **modern, scalable ticket management system** enhanced with **machine learning models** for intelligent ticket classification. Built with a layered architecture to separate concerns across the frontend, backend, ML services, and database.
 
-Framework: React
+---
 
-Styling: Tailwind CSS
+## 🚀 Overview
+This project streamlines IT ticketing by automating classification and routing through machine learning. It ensures faster resolution, reduces manual workload, and improves customer satisfaction.
 
-Purpose: Clean and responsive interface to submit, track, and manage tickets.
+Architecture layers:
+- **Frontend** → Responsive UI for submitting and tracking tickets.
+- **Web Backend** → Manages API requests, business logic, and communication between components.
+- **ML Backend** → Classifies tickets using NLP and ML models.
+- **Database** → Central data store for tickets, users, and logs.
 
-Web Backend
-Language: Node.js
+---
 
-Framework: Express.js
+## 🛠️ Tech Stack
 
-Purpose: Handles API requests, manages business logic, and communicates with the ML backend and database.
+### Frontend
+- **Languages**: HTML, CSS, JavaScript  
+- **Framework**: React  
+- **Styling**: Tailwind CSS  
+- **Purpose**: Clean and responsive interface for employees to submit, track, and manage tickets  
 
-Machine Learning Backend
-Language: Python
+### Web Backend
+- **Language**: Node.js  
+- **Framework**: Express.js  
+- **Purpose**: Handles REST API requests, business logic, and communication with ML backend & PostgreSQL  
 
-Framework: FastAPI
+### Machine Learning Backend
+- **Language**: Python  
+- **Framework**: FastAPI  
+- **Libraries**: Scikit-learn, Pandas, spaCy/NLTK  
+- **Purpose**: Provides model-driven API for intelligent ticket classification and automation  
 
-Libraries: Scikit-learn, Pandas, spaCy/NLTK
+### Database
+- **Technology**: PostgreSQL  
+- **Purpose**: Persistent storage of tickets, users, and logs (supports retraining ML models)
 
-Purpose: Provides a model-driven API for ticket classification and automation.
+---
 
-Database
-Technology: PostgreSQL
+## ✨ Features
+- ✅ Model-driven ticket classification (using ML/NLP)  
+- ✅ User-friendly web interface for employees  
+- ✅ Scalable, API-driven backend architecture  
+- ✅ Secure data storage and retrieval with PostgreSQL  
+- ✅ Modular design for easy integration and scaling  
 
-Purpose: Stores tickets, user data, and logs for retraining models and historical reference.
 
-Features
-Model-driven ticket classification.
 
-User-friendly web interface for employees.
-
-Scalable API-driven backend architecture.
-
-Data storage and retrieval with PostgreSQL
